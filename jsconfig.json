@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "baseUrl": ".",
+    "paths": {
+      "_assets/*": ["src/assets/*"],
+      "_components/*": ["src/components/*"],
+      "_navigation/*": ["src/navigation/*"],
+      "_screens/*": ["src/screens/*"],
+      "_constants/*": ["src/constants/*"]
+    }
+  }
+  // "exclude": ["node_modules", "**/node_modules/*"]
+}

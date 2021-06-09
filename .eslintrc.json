@@ -1,0 +1,27 @@
+{
+  "root": true,
+  "extends": ["@react-native-community", "plugin:prettier/recommended"],
+  "plugins": ["import", "prettier"],
+  "rules": {
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ]
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": ["src"],
+        "alias": {
+          "_assets": "./src/assets",
+          "_components": "./src/components",
+          "_navigation": "./src/navigation",
+          "_screens": "./src/screens",
+          "_constants": "./src/constants"
+        }
+      }
+    }
+  }
+}

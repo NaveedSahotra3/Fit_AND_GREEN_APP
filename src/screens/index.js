@@ -1,0 +1,12 @@
+export { default as Home } from './Home';
+export { default as FoodDetails } from './FoodDetails';
+export { default as Products } from './Products';
+export { default as MyBasket } from './My Basket';
+export { default as Messages } from './Messages';
+export { default as FidelityProgram } from './Fidelity Program';
+export { default as InfoAndContacts } from './Info & Contacts';
+export { default as Settings } from './Settings';
+export { default as Chats } from './Chats';
+export { Login, Signup } from './Auth';
+export { default as Notifications } from './Notifications';
+export { default as MyOrders } from './MyOrders';
