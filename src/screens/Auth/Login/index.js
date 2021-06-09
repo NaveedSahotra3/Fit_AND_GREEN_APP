@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
+  ActivityIndicator,
   Pressable,
   ScrollView,
   StatusBar,
@@ -12,7 +13,17 @@ import { Header, Button } from '_components';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { AnimationQueue } from '_components';
 import { Colors } from '_constants';
+import { useDispatch, useSelector } from 'react-redux';
+import { LogIn } from '../../../redux/actions/AuthActions';
 export default function Login({ navigation }) {
+  const dispatch = useDispatch();
+  const { loggingIn } = useSelector((state) => state.AuthReducer);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const onLogin = function () {
+    console.log(email, password);
+    if (email !== '' && password !== '') dispatch(LogIn(email, password));
+  };
   return (
     <>
       <StatusBar
@@ -39,15 +50,28 @@ export default function Login({ navigation }) {
               </Text>
               <View style={[styles.inputContainer, styles.marginTop]}>
                 <Icon name={'person'} size={24} />
-                <TextInput style={styles.input} placeholder={'E-mail'} />
+                <TextInput
+                  onChangeText={setEmail}
+                  value={email}
+                  style={styles.input}
+                  placeholder={'E-mail'}
+                />
               </View>
               <View style={[styles.inputContainer]}>
                 <Icon name={'lock-open'} size={24} />
-                <TextInput style={styles.input} placeholder={'Password'} />
+                <TextInput
+                  onChangeText={setPassword}
+                  value={password}
+                  keyboardType={'default'}
+                  secureTextEntry={true}
+                  textContentType={'newPassword'}
+                  style={styles.input}
+                  placeholder={'Password'}
+                />
               </View>
             </AnimationQueue>
             <View style={styles.buttonContainer}>
-              <Button title={'Login'} onPress={() => {}} />
+              <Button loading={loggingIn} title={'Login'} onPress={onLogin} />
             </View>
             <View style={styles.optionHint}>
               <AnimationQueue delay={200}>

@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES6",
+    "target": "ES5",
     "baseUrl": ".",
     "paths": {
       "_assets/*": ["src/assets/*"],

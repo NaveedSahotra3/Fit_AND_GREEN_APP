@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text } from 'react-native';
 import { Colors } from '_constants';
 import { TapGestureHandler } from 'react-native-gesture-handler';
 import Animated, {
@@ -10,7 +10,11 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from 'react-native-reanimated';
-export default function StickyButton({ title = 'test', onPress = () => {} }) {
+export default function StickyButton({
+  title = 'test',
+  onPress = () => {},
+  loading = false,
+}) {
   const animatedElevation = useSharedValue(0);
   const mountingAnimation = useSharedValue(0);
   useEffect(() => {
@@ -64,6 +68,15 @@ export default function StickyButton({ title = 'test', onPress = () => {} }) {
         style={[styles.container, mountingStyle, animatedStyleForElevation]}
       >
         <Text style={styles.text}>{title}</Text>
+        {loading ? (
+          <ActivityIndicator
+            style={{
+              marginLeft: 8,
+            }}
+            size={18}
+            color={'#fff'}
+          />
+        ) : null}
       </Animated.View>
     </TapGestureHandler>
   );
@@ -78,6 +91,7 @@ const styles = StyleSheet.create({
     paddingVertical: '5%',
     alignItems: 'center',
     justifyContent: 'center',
+    flexDirection: 'row',
   },
   text: {
     fontFamily: 'GothamBold',

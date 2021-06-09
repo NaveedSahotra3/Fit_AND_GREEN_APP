@@ -9,8 +9,12 @@ import { Button, IconButton, List, Switch, Divider } from 'react-native-paper';
 import WithSection from './WithSection';
 import AnimationQueue from './AnimationQueue';
 import { Colors } from '_constants';
+import { useDispatch, useSelector } from 'react-redux';
+import { LogOut } from '../redux/actions/AuthActions';
 export default function CustomDrawer(props) {
   const isOpen = useIsDrawerOpen();
+  const { isLoggedIn } = useSelector((state) => state.AuthReducer);
+  const dispatch = useDispatch();
   const {
     state,
     // descriptors,
@@ -61,6 +65,9 @@ export default function CustomDrawer(props) {
       iconName: 'cog-outline',
     },
   ]).current;
+  const onLogOut = () => {
+    dispatch(LogOut());
+  };
   return (
     <DrawerContentScrollView {...props}>
       {isOpen ? (
@@ -68,31 +75,35 @@ export default function CustomDrawer(props) {
           <View style={styles.Header}>
             <AnimationQueue delay={50}>
               <Text style={styles.brandTitle}>Welcome to Green & Fit Food</Text>
-              <Text style={styles.loggingRequestTitle}>
-                Discover all possibilities by logging in
-              </Text>
-              <View style={styles.authButtonContainer}>
-                <Button
-                  style={styles.AuthButton}
-                  labelStyle={styles.authButtonLabel}
-                  mode={'contained'}
-                  onPress={() => {
-                    navigation.navigate('Auth', { screen: 'Login' });
-                  }}
-                >
-                  Login
-                </Button>
-                <Button
-                  style={styles.authButtonOutline}
-                  labelStyle={styles.outlineButtonText}
-                  mode={'outlined'}
-                  onPress={() => {
-                    navigation.navigate('Auth', { screen: 'Signup' });
-                  }}
-                >
-                  Create Account
-                </Button>
-              </View>
+              {!isLoggedIn ? (
+                <>
+                  <Text style={styles.loggingRequestTitle}>
+                    Discover all possibilities by logging in
+                  </Text>
+                  <View style={styles.authButtonContainer}>
+                    <Button
+                      style={styles.AuthButton}
+                      labelStyle={styles.authButtonLabel}
+                      mode={'contained'}
+                      onPress={() => {
+                        navigation.navigate('Auth', { screen: 'Login' });
+                      }}
+                    >
+                      Login
+                    </Button>
+                    <Button
+                      style={styles.authButtonOutline}
+                      labelStyle={styles.outlineButtonText}
+                      mode={'outlined'}
+                      onPress={() => {
+                        navigation.navigate('Auth', { screen: 'Signup' });
+                      }}
+                    >
+                      Create Account
+                    </Button>
+                  </View>
+                </>
+              ) : null}
               <WithSection title={'Change Shop'} titleSize={16}>
                 <View style={styles.shopDetailContainer}>
                   <Text style={styles.shopAddress}>
@@ -148,6 +159,22 @@ export default function CustomDrawer(props) {
                   />
                 );
               })}
+              {isLoggedIn ? (
+                <List.Item
+                  style={{
+                    backgroundColor: '#fff',
+                  }}
+                  left={(p) => (
+                    <List.Icon {...p} icon={'logout'} color={'#302f3c'} />
+                  )}
+                  title={'Logout'}
+                  titleStyle={{
+                    color: '#302f3c',
+                    fontFamily: 'GothamLight',
+                  }}
+                  onPress={onLogOut}
+                />
+              ) : null}
             </AnimationQueue>
           </View>
           <Divider />

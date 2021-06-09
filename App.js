@@ -2,15 +2,23 @@ import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { MainNavigation } from '_navigation';
 import SplashScreen from 'react-native-splash-screen';
-// import Storybooks from './storybook';
+import { PersistGate } from 'redux-persist/integration/react';
+import { Provider } from 'react-redux';
+import Store from './src/redux/store';
+
+const { store, persistor } = Store();
 export default function App() {
   useEffect(() => {
     SplashScreen.hide();
   }, []);
   return (
-    <NavigationContainer>
-      <MainNavigation />
-    </NavigationContainer>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <NavigationContainer>
+          <MainNavigation />
+        </NavigationContainer>
+      </PersistGate>
+    </Provider>
   );
 }
 

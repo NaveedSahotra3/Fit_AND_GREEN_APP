@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
 import {
@@ -16,6 +16,7 @@ import {
   Signup,
 } from '_screens';
 import { CustomDrawer } from '_components';
+import { useSelector } from 'react-redux';
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 function FoodStack() {
@@ -145,6 +146,8 @@ function AuthStack() {
   );
 }
 export default function MainNavigation() {
+  const { isLoggedIn } = useSelector((state) => state.AuthReducer);
+  useEffect(() => {}, []);
   return (
     <Drawer.Navigator
       initialRouteName={'FoodStack'}
@@ -166,7 +169,7 @@ export default function MainNavigation() {
       <Drawer.Screen name="FidelityProgram" component={FidelityProgram} />
       <Drawer.Screen name="InfoAndContacts" component={InfoAndContacts} />
       <Drawer.Screen name="Settings" component={Settings} />
-      <Drawer.Screen name="Auth" component={AuthStack} />
+      {!isLoggedIn ? <Drawer.Screen name="Auth" component={AuthStack} /> : null}
     </Drawer.Navigator>
   );
 }
