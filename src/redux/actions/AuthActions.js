@@ -35,7 +35,32 @@ export const LogIn = (email, password) => {
     }
   };
 };
-export const SignUp = () => (dispatch) => {};
+export const SignUp = ({
+  email = '',
+  password = '',
+  name = '',
+  mobile = '',
+  address = '',
+}) => {
+  return async (dispatch) => {
+    dispatch(signingUp());
+    try {
+      const response = await fetch(`${BASE_URL}/api/admin/auth/register`, {
+        method: 'POST',
+        headers: {
+          Accept: '*/*',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password, name, mobile, address }),
+      });
+      const result = (await response.json()).data;
+      console.log(result);
+      dispatch(signUp(result));
+    } catch (e) {
+      console.log('error occured ', e);
+    }
+  };
+};
 export const LogOut = () => ({
   type: AuthTypes.LOG_OUT,
 });

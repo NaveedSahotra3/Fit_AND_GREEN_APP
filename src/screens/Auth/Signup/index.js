@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable eqeqeq */
+import React, { useState } from 'react';
 import {
   Pressable,
   ScrollView,
@@ -6,14 +7,49 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  ToastAndroid,
   View,
 } from 'react-native';
 import { Header, Button } from '_components';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { AnimationQueue } from '_components';
 import { Colors } from '_constants';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { SignUp } from '../../../redux/actions/AuthActions';
 export default function Signup({ navigation }) {
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [address, setAddress] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const { signingUp } = useSelector((state) => state.AuthReducer);
+  const dispatch = useDispatch();
+  const onSignUp = () => {
+    if (
+      email != '' &&
+      name != '' &&
+      phoneNumber != '' &&
+      address != '' &&
+      password != '' &&
+      confirmPassword != '' &&
+      password == confirmPassword
+    ) {
+      dispatch(
+        SignUp({
+          email,
+          password,
+          name,
+          mobile: phoneNumber,
+          address: address,
+        })
+      );
+    } else {
+      let message = 'Please watch your input!!';
+      if (password != confirmPassword) message = 'Password does not match!!';
+      ToastAndroid.show(message, ToastAndroid.LONG);
+    }
+  };
   return (
     <>
       <StatusBar
@@ -39,31 +75,70 @@ export default function Signup({ navigation }) {
                 We need some extra information
               </Text>
               <View style={[styles.inputContainer, styles.marginTop]}>
-                <Icon name={'person'} size={24} />
-                <TextInput style={styles.input} placeholder={'E-mail'} />
-              </View>
-              <View style={[styles.inputContainer]}>
-                <Icon name={'lock-open'} size={24} />
-                <TextInput style={styles.input} placeholder={'Phone Number'} />
-              </View>
-              <View style={[styles.inputContainer]}>
-                <Icon name={'lock-open'} size={24} />
-                <TextInput style={styles.input} placeholder={'Address'} />
-              </View>
-              <View style={[styles.inputContainer]}>
-                <Icon name={'lock-open'} size={24} />
-                <TextInput style={styles.input} placeholder={'Password'} />
-              </View>
-              <View style={[styles.inputContainer]}>
-                <Icon name={'lock-open'} size={24} />
+                <Icon name={'at'} size={20} />
                 <TextInput
+                  textContentType={'emailAddress'}
+                  style={styles.input}
+                  placeholder={'E-mail'}
+                  onChangeText={setEmail}
+                  value={email}
+                />
+              </View>
+              <View style={[styles.inputContainer]}>
+                <Icon name={'person'} size={20} />
+                <TextInput
+                  textContentType={'name'}
+                  style={styles.input}
+                  placeholder={'Name'}
+                  onChangeText={setName}
+                  value={name}
+                />
+              </View>
+              <View style={[styles.inputContainer]}>
+                <Icon name={'phone-portrait-sharp'} size={20} />
+                <TextInput
+                  textContentType={'telephoneNumber'}
+                  style={styles.input}
+                  placeholder={'Phone Number'}
+                  onChangeText={setPhoneNumber}
+                  value={phoneNumber}
+                />
+              </View>
+              <View style={[styles.inputContainer]}>
+                <Icon name={'pencil'} size={20} />
+                <TextInput
+                  textContentType={'addressCityAndState'}
+                  style={styles.input}
+                  placeholder={'Address'}
+                  onChangeText={setAddress}
+                  value={address}
+                />
+              </View>
+              <View style={[styles.inputContainer]}>
+                <Icon name={'lock-open'} size={20} />
+                <TextInput
+                  textContentType={'password'}
+                  secureTextEntry={true}
+                  style={styles.input}
+                  placeholder={'Password'}
+                  onChangeText={setPassword}
+                  value={password}
+                />
+              </View>
+              <View style={[styles.inputContainer]}>
+                <Icon name={'lock-open'} size={20} />
+                <TextInput
+                  textContentType={'password'}
+                  secureTextEntry={true}
                   style={styles.input}
                   placeholder={'Confirm Password'}
+                  onChangeText={setConfirmPassword}
+                  value={confirmPassword}
                 />
               </View>
             </AnimationQueue>
             <View style={styles.buttonContainer}>
-              <Button title={'Signup'} onPress={() => {}} />
+              <Button loading={signingUp} title={'Signup'} onPress={onSignUp} />
             </View>
             <View style={styles.optionHint}>
               <AnimationQueue delay={200}>

@@ -26,10 +26,14 @@ export default function AuthReducer(state = initialState, action) {
     case AuthTypes.SIGNING_UP:
       return {
         ...state,
+        signingUp: true,
       };
     case AuthTypes.SIGN_UP:
       return {
         ...state,
+        signingUp: false,
+        isLoggedIn: true,
+        user: action.payload,
       };
     case AuthTypes.LOG_OUT:
       return initialState;
