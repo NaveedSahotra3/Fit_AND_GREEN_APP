@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
+  Alert,
   Pressable,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
   TextInput,
+  ToastAndroid,
   View,
 } from 'react-native';
 import { Header, Button } from '_components';
@@ -20,9 +22,29 @@ export default function Login({ navigation }) {
   const { loggingIn } = useSelector((state) => state.AuthReducer);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const validateEmail = (e) => {
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(e).toLowerCase());
+  };
+  const successLogin = () => {
+    // ToastAndroid.show('Successfully Logged In', ToastAndroid.LONG);
+    Alert.alert('Hurray!!', 'Successfully Logged In');
+  };
+  const errorLogin = () => {
+    // ToastAndroid.show('Error loggin in. Try again!!', ToastAndroid.LONG);
+    Alert.alert('Error', "There's something wrong logging you in");
+  };
   const onLogin = function () {
-    console.log(email, password);
-    if (email !== '' && password !== '') dispatch(LogIn(email, password));
+    // console.log(email, password);
+    if (email !== '' && password !== '') {
+      if (validateEmail(email)) {
+        dispatch(LogIn(email, password, successLogin, errorLogin));
+      } else {
+        ToastAndroid.show('Email format is not valid!!', ToastAndroid.LONG);
+      }
+    } else {
+      ToastAndroid.show('Fields can not be empty', ToastAndroid.LONG);
+    }
   };
   return (
     <>

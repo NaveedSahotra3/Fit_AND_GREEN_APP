@@ -16,8 +16,10 @@ import {
   IconButton,
 } from 'react-native-paper';
 import { Colors } from '_constants';
+import { useSelector } from 'react-redux';
 export default function Settings() {
   const [edit, enableEdit] = useState(false);
+  const { user } = useSelector((state) => state.AuthReducer);
   return (
     <>
       <StatusBar
@@ -56,21 +58,25 @@ export default function Settings() {
                 />
               </TouchableRipple>
               <Divider style={styles.divider} />
-              <TextInput editable={edit} label={'First Name'} value={'Ayush'} />
+              <TextInput
+                editable={edit}
+                label={'First Name'}
+                value={user.name ? user.name : '--'}
+              />
               <TextInput
                 editable={edit}
                 label={'Last Name'}
-                value={'Tripathi'}
+                value={user.lastName ? user.lastName : ''}
               />
               <TextInput
                 editable={edit}
                 label={'Phone Number'}
-                value={'+7188987676'}
+                value={user.mobile ? user.mobile : '--'}
               />
               <TextInput
                 editable={edit}
                 label={'Email'}
-                value={'emailcompany@mailto.com'}
+                value={user.email ? user.email : '--'}
               />
               <TextInput
                 underlineColor={'#008b83'}

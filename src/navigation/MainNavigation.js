@@ -168,7 +168,9 @@ export default function MainNavigation() {
       <Drawer.Screen name="MessagesStack" component={MessagesStack} />
       <Drawer.Screen name="FidelityProgram" component={FidelityProgram} />
       <Drawer.Screen name="InfoAndContacts" component={InfoAndContacts} />
-      <Drawer.Screen name="Settings" component={Settings} />
+      {isLoggedIn ? (
+        <Drawer.Screen name="Settings" component={Settings} />
+      ) : null}
       {!isLoggedIn ? <Drawer.Screen name="Auth" component={AuthStack} /> : null}
     </Drawer.Navigator>
   );

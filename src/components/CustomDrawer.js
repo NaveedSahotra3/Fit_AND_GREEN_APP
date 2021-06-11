@@ -122,6 +122,7 @@ export default function CustomDrawer(props) {
           <View style={styles.RouteList}>
             <AnimationQueue delay={70}>
               {RouteList.map((item, i) => {
+                if (item._id == 'settings' && !isLoggedIn) return null;
                 const active = i === state.index;
                 return (
                   <List.Item

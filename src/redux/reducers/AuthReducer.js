@@ -37,6 +37,8 @@ export default function AuthReducer(state = initialState, action) {
       };
     case AuthTypes.LOG_OUT:
       return initialState;
+    case AuthTypes.ERROR_OCCURED:
+      return initialState;
     default:
       return state;
   }

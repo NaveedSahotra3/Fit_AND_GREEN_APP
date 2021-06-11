@@ -4,4 +4,5 @@ export const AuthTypes = {
   SIGNING_UP: 'SIGNING_UP',
   SIGN_UP: 'SIGN_UP',
   LOG_OUT: 'LOG_OUT',
+  ERROR_OCCURED: 'ERROR_OCCURED',
 };

@@ -15,7 +15,15 @@ const signUp = (user) => ({
   type: AuthTypes.SIGN_UP,
   payload: user,
 });
-export const LogIn = (email, password) => {
+const errorOccured = () => ({
+  type: AuthTypes.ERROR_OCCURED,
+});
+export const LogIn = (
+  email,
+  password,
+  successCb = () => {},
+  errorCb = () => {}
+) => {
   return async (dispatch) => {
     dispatch(logginIn());
     try {
@@ -27,21 +35,27 @@ export const LogIn = (email, password) => {
         },
         body: JSON.stringify({ email, password }),
       });
-      const result = (await response.json()).data;
-      console.log(result.user);
-      dispatch(logIn(result.user));
+      const { success, data } = await response.json();
+      // console.log(data);
+      if (success) {
+        successCb();
+        dispatch(logIn(data.user));
+      } else {
+        dispatch(errorOccured());
+        errorCb();
+      }
     } catch (e) {
-      console.log('error occured ', e);
+      // console.log('error occured ', e);
+      dispatch(errorOccured());
+      errorCb();
     }
   };
 };
-export const SignUp = ({
-  email = '',
-  password = '',
-  name = '',
-  mobile = '',
-  address = '',
-}) => {
+export const SignUp = (
+  { email = '', password = '', name = '', mobile = '', address = '' },
+  successCb = () => {},
+  errorCb = () => {}
+) => {
   return async (dispatch) => {
     dispatch(signingUp());
     try {
@@ -53,11 +67,20 @@ export const SignUp = ({
         },
         body: JSON.stringify({ email, password, name, mobile, address }),
       });
-      const result = (await response.json()).data;
-      console.log(result);
-      dispatch(signUp(result));
+      const result = await response.json();
+      // console.log(result);
+      const { data, success } = result;
+      if (success) {
+        successCb();
+        dispatch(signUp(data));
+      } else {
+        dispatch(errorOccured());
+        errorCb();
+      }
     } catch (e) {
-      console.log('error occured ', e);
+      // console.log('error occured ', e);
+      dispatch(errorOccured());
+      errorCb();
     }
   };
 };

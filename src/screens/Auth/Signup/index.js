@@ -1,6 +1,7 @@
 /* eslint-disable eqeqeq */
 import React, { useState } from 'react';
 import {
+  Alert,
   Pressable,
   ScrollView,
   StatusBar,
@@ -25,6 +26,18 @@ export default function Signup({ navigation }) {
   const [confirmPassword, setConfirmPassword] = useState('');
   const { signingUp } = useSelector((state) => state.AuthReducer);
   const dispatch = useDispatch();
+  const validateEmail = (e) => {
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(e).toLowerCase());
+  };
+  const successSignup = () => {
+    // ToastAndroid.show('Successfully Signed Up!!');
+    Alert.alert('Success!!', 'Successfully Signed Up!!');
+  };
+  const errorSignup = () => {
+    // ToastAndroid.show('Error Signing Up!! Try Again');
+    Alert.alert('Error!!', 'Error Signing Up!! Try Again');
+  };
   const onSignUp = () => {
     if (
       email != '' &&
@@ -35,15 +48,29 @@ export default function Signup({ navigation }) {
       confirmPassword != '' &&
       password == confirmPassword
     ) {
-      dispatch(
-        SignUp({
-          email,
-          password,
-          name,
-          mobile: phoneNumber,
-          address: address,
-        })
-      );
+      let errorFlag = 0;
+      let errorMessage = '';
+      if (!validateEmail(email)) {
+        errorFlag++;
+        errorMessage += 'Email format is not valid!!\n';
+      }
+      if (!errorFlag) {
+        dispatch(
+          SignUp(
+            {
+              email,
+              password,
+              name,
+              mobile: phoneNumber,
+              address: address,
+            },
+            successSignup,
+            errorSignup
+          )
+        );
+      } else {
+        ToastAndroid.show(errorMessage, ToastAndroid.LONG);
+      }
     } else {
       let message = 'Please watch your input!!';
       if (password != confirmPassword) message = 'Password does not match!!';

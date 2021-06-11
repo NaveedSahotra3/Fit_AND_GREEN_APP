@@ -18,7 +18,9 @@ export default function Home({ navigation }) {
     'chicker lollipop',
   ]).current;
   const [show, setShow] = useState(true);
-  const { isLoggedIn } = useSelector((state) => state.AuthReducer);
+  const { isLoggedIn, user } = useSelector((state) => state.AuthReducer);
+  // console.log('islogged in ', isLoggedIn);
+  // console.log('user ', user);
   return (
     <>
       <StatusBar
